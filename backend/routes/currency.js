@@ -4,6 +4,9 @@ const Currency = require('../models/currency');
 
 const BASE = '/currency';
 
+/**
+ * Return all the current currencies we have profiles for
+ */
 router.get(`${BASE}`, async (ctx) => {
     console.log(`GET ${BASE}`);
 

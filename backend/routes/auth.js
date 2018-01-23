@@ -7,6 +7,9 @@ const User = require('../models/user');
 
 const BASE = '/auth';
 
+/**
+ * Login and check credentials then provide JWT
+ */
 router.post(`${BASE}/login`, async (ctx) => {
     console.log(`POST ${BASE}/login - ${ctx.request.body.email}`);
     console.log(ctx.request.body);

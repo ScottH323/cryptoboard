@@ -5,6 +5,7 @@ const db = require('../db');
 /**
  * Currency {
  *  id int
+ *  symbol string (BTC,ETH)
  *  ex_id string (bitcoin, ether)
  * }
  */

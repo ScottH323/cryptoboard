@@ -28,7 +28,9 @@ router.get(`${BASE}/:id`, async (ctx) => {
     }
 });
 
-
+/**
+ * Update the profiles name
+ */
 router.put(`${BASE}/:id`, async (ctx) => {
     console.log(`PUT ${BASE}/${ctx.params.id}`);
     console.log(ctx.request.body);
@@ -46,6 +48,9 @@ router.put(`${BASE}/:id`, async (ctx) => {
 
 });
 
+/**
+ * Create a new profile for the account
+ */
 router.post(`${BASE}`, async (ctx) => {
     console.log(`POST ${BASE}`);
     console.log(ctx.request.body); //TODO validation
@@ -66,6 +71,9 @@ router.post(`${BASE}`, async (ctx) => {
     }
 });
 
+/**
+ * Delete a profile
+ */
 router.delete(`${BASE}/:id`, async (ctx) => {
     console.log(`DELETE ${BASE}/${ctx.params.id}`);
 

@@ -5,6 +5,11 @@ const User   = require('../models/user');
 
 const BASE = "/users";
 
+/**
+ * Return a list of all users
+ * TODO Complete
+ * TODO Validation
+ */
 router.get(`${BASE}`, async (ctx) => {
     console.log(`GET ${BASE}`);
 
@@ -13,6 +18,10 @@ router.get(`${BASE}`, async (ctx) => {
     }
 });
 
+/**
+ * Return a single user
+ * TODO Validation
+ */
 router.get(`${BASE}/:id`, async (ctx) => {
     console.log(`GET ${BASE}/${ctx.params.id}`);
 
@@ -26,6 +35,10 @@ router.get(`${BASE}/:id`, async (ctx) => {
     ctx.body = user
 });
 
+/**
+ * Update an existing user
+ * TODO Validation
+ */
 router.put(`${BASE}/:id`, async (ctx) => {
     console.log(`PUT ${BASE}/${ctx.params.id}`);
     console.log(ctx.request.body);
@@ -43,11 +56,13 @@ router.put(`${BASE}/:id`, async (ctx) => {
 
 });
 
+/**
+ * Create a new user
+ * TODO validation
+ */
 router.post(`${BASE}`, async (ctx) => {
     console.log(`POST ${BASE}`);
     console.log(ctx.request.body);
-
-    //TODO validation
 
     try {
         ctx.body = {
@@ -62,6 +77,10 @@ router.post(`${BASE}`, async (ctx) => {
     }
 });
 
+/**
+ * Delete a user
+ * TODO Validation + Auth
+ */
 router.delete(`${BASE}/:id`, async (ctx) => {
     console.log(`DELETE ${BASE}/${ctx.params.id}`);
 
