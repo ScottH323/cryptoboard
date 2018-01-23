@@ -34,7 +34,7 @@ module.exports = {
         //Create profiles table
         await pool.query(`CREATE TABLE IF NOT EXISTS profiles (
         id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES profiles(id) NOT NULL,
+        user_id INTEGER REFERENCES users(id) NOT NULL,
         name VARCHAR(255) NOT NULL
         )`);
 
