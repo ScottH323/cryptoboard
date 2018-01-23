@@ -51,6 +51,7 @@ app.use(async (ctx, next) => {
  * Handle Authed routes here for simplicity
  */
 app.use(require('./routes/currency.js'));
+app.use(require('./routes/profile.js'));
 app.use(require('./routes/user.js'));
 
 app.listen(3000);

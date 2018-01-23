@@ -20,9 +20,11 @@ class User {
      */
     static async find(id) {
         const {rows} = await db.query("SELECT id,email,name FROM users WHERE id = $1 LIMIT 1", [id]);
-        //TODO ERR Checking
 
-        return rows;
+        if (!rows.length)
+            throw errors.NotFound;
+
+        return rows[0];
     }
 
     /**
@@ -86,7 +88,7 @@ class User {
      * @param id
      * @return {Promise.<void>}
      */
-    static async delete(id) {
+    static async destroy(id) {
         const user = await User.find(id);
         if (!user.length)
             throw errors.NotFound;

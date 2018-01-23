@@ -16,14 +16,14 @@ router.get(`${BASE}`, async (ctx) => {
 router.get(`${BASE}/:id`, async (ctx) => {
     console.log(`GET ${BASE}/${ctx.params.id}`);
 
-    const rows = await User.find(ctx.params.id);
-    if (!rows.length) {
+    const user = await User.find(ctx.params.id);
+    if (!user.length) {
         ctx.status = 404;
         ctx.body   = errors.NotFound;
         return;
     }
 
-    ctx.body = rows[0]
+    ctx.body = user
 });
 
 router.put(`${BASE}/:id`, async (ctx) => {
@@ -66,7 +66,7 @@ router.delete(`${BASE}/:id`, async (ctx) => {
     console.log(`DELETE ${BASE}/${ctx.params.id}`);
 
     try {
-        await User.delete(ctx.params.id);
+        await User.destroy(ctx.params.id);
         ctx.body = {
             success: true,
             message: "User deleted"
