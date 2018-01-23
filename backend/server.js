@@ -1,33 +1,56 @@
-const Koa       = require('koa');
-const KoaRouter = require('koa-router');
-const jwt       = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const result = dotenv.config();
+if (result.error) {
+    throw result.error
+}
+
+const Koa        = require('koa');
+const BodyParser = require('koa-bodyparser');
+const jwt        = require('jsonwebtoken');
+const errors     = require('./errors');
+const db         = require('./db');
+
+db.migrate(); //Run through migrations and setup DB
+db.seed();
 
 const app = module.exports = new Koa();
+app.use(BodyParser());
 
-
-app.use(require('./routes/currency.js'));
+/**
+ * Non-Auth endpoints here
+ */
 app.use(require('./routes/auth.js'));
 
 /**
- * Verify if the specified JWT token is valid or not
+ * JWT checks
  */
-app.use(async function verifyJwt(ctx, next) {
-    if (!ctx.header.authorization) ctx.throw(401, 'Authorisation required');
-    const [scheme, token] = ctx.header.authorization.split(' ');
-    if (scheme !== 'Bearer') ctx.throw(401, 'Invalid authorisation');
+app.use(async (ctx, next) => {
+    if (!ctx.header.authorization) ctx.throw(401, 'Authorization required');
 
-    const roles = {g: 'guest', a: 'admin', s: 'su'};
+    const [scheme, token] = ctx.header.authorization.split(' ');
+    if (scheme !== 'Bearer') ctx.throw(401, 'Invalid authorization');
 
     try {
-        const payload  = jwt.verify(token, 'eAmC8mlvtrnCTLWBh7jCtMFlxa5CpRFH');
+        const payload  = jwt.verify(token, process.env.APP_KEY);
         ctx.state.user = payload;
 
     } catch (e) {
-        if (e.message === 'invalid token') ctx.throw(401, 'Invalid JWT'); // Unauthorized
-        ctx.throw(e.status || 500, e.message); // Internal Server Error
+        let err = ctx.ParseError(e);
+
+        if (e.message === 'invalid token') //Override
+            err = errors.AuthError;
+
+        ctx.status = err.code;
+        ctx.body   = err;
     }
 
     await next();
 });
+
+/**
+ * Handle Authed routes here for simplicity
+ */
+app.use(require('./routes/currency.js'));
+app.use(require('./routes/user.js'));
 
 app.listen(3000);

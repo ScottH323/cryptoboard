@@ -1,17 +1,24 @@
 <template>
-    <div>
-        <h2>Login</h2>
-        <form @submit.prevent="login">
-            <input class="form-control" type="email" placeholder="Enter your email address" v-model="email"
-                   v-validate="'required|email'" ref="focusOnMe" autocorrect="off" autocapitalize="off"
-                   spellcheck="false"/>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h2 class="text-center">Login</h2>
+            <form @submit.prevent="login">
+                <div class="form-group">
+                    <input class="form-control" type="email" placeholder="Enter your email address" v-model="email"
+                           v-validate="'required|email'" ref="focusOnMe" autocorrect="off" autocapitalize="off"
+                           spellcheck="false"/>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" placeholder="Enter your password"
+                           v-model="password" v-validate="'required'" autocorrect="off" autocapitalize="off"
+                           spellcheck="false"/>
+                </div>
 
-            <input class="form-control" type="password" name="password" placeholder="Enter your password"
-                   v-model="password" v-validate="'required'" autocorrect="off" autocapitalize="off"
-                   spellcheck="false"/>
-
-            <button class="btn btn-primary" :disabled="!this.ready">Login</button>
-        </form>
+                <div class="form-group">
+                    <button class="btn btn-primary" :disabled="!this.ready">Login</button>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 

@@ -1,31 +1,37 @@
-const router = require('koa-router')(); // router middleware for koa
-const jwt    = require('jsonwebtoken'); // JSON Web Token implementation
-const scrypt = require('scrypt');
+const router = require('koa-router')();
+const jwt    = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const errors = require('../errors');
 
 const User = require('../models/user');
 
-router.get('/auth', async function getAuth(ctx) {
-    const [user] = await User.byUsername(ctx.query.username);
+const BASE = '/auth';
 
-    if (!user) ctx.throw(404, 'Username/password not found');
+router.post(`${BASE}/login`, async (ctx) => {
+    console.log(`POST ${BASE}/login - ${ctx.request.body.email}`);
+    console.log(ctx.request.body);
 
-    // check password
     try {
-        const match = await scrypt.verifyKdf(Buffer.from(user.Password, 'base64'), ctx.query.password);
+        const user  = await User.byEmail(ctx.request.body.email);
+        const match = await bcrypt.compare(ctx.request.body.password, user.password);
 
-        if (!match) ctx.throw(404, 'Username/password not found');
+        if (!match)
+            throw errors.AuthError;
 
+        console.log("Building payload");
         const payload = {
-            id: user.UserId,                         // to get user details
-            role: user.Role.slice(0, 1).toLowerCase(), // make role available without db query
+            id: user.id,
         };
 
-        const token = jwt.sign(payload, 'eAmC8mlvtrnCTLWBh7jCtMFlxa5CpRFH', {expiresIn: '24h'});
+        const token = jwt.sign(payload, process.env.APP_KEY, {expiresIn: '24h'});
         ctx.body    = {jwt: token, root: 'Auth'};
 
     } catch (e) {
+        console.log(e);
 
-        ctx.throw(404, 'Username/password not found');
+        let err    = errors.ParseError(e);
+        ctx.status = err.code;
+        ctx.body   = err.message;
     }
 });
 

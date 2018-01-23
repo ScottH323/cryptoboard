@@ -10,6 +10,7 @@ const CopyWebpackPlugin       = require('copy-webpack-plugin');
 const HtmlWebpackPlugin       = require('html-webpack-plugin');
 const autoprefixer            = require('autoprefixer');
 
+
 // Production flat
 let inProduction = (process.env.NODE_ENV === 'production');
 
@@ -68,6 +69,7 @@ module.exports = {
                 // exclude: /node_modules/,
                 include: [
                     path.resolve(__dirname, "src"),
+                    path.resolve(__dirname, "node_modules/bootstrap")
                 ],
                 options: {
                     postcss: [

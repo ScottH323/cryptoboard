@@ -11,6 +11,7 @@ import store from './XStore';
 
 import router from './app.router';
 
+import VueCharts from 'vue-chartjs'
 
 window.Vue       = Vue;
 window.VueRouter = VueRouter;
@@ -32,5 +33,6 @@ Vue.use(VueSweetAlert);
 
 Vue.use(Toasted, {duration: (2.5 * 1000)});
 
+Vue.use(VueCharts);
 
 window.router = router;

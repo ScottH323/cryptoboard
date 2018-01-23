@@ -1,6 +1,11 @@
 <template>
-    <div>
-        <router-view></router-view>
+    <div class="container-fluid">
+        <nav-bar></nav-bar>
+        <div class="row flex-xl-nowrap">
+            <main class="col-12" role="main">
+                <router-view></router-view>
+            </main>
+        </div>
     </div>
 </template>
 
@@ -9,41 +14,22 @@
 </style>
 
 <script>
+    import NavBar from "./views/components/nav-bar.vue"
 
     export default {
-        components: {},
+        components: {
+            NavBar
+        },
         data() {
             return {
                 //
             }
         },
         beforeMount() {
-            this.addNavbarItems();
+            //
         },
         methods: {
-
-            /**
-             * Add the navbar items
-             */
-            addNavbarItems() {
-
-                this.left = [
-                    {}
-                ];
-
-                /**
-                 * Demo for navbar
-                 */
-                this.right = [
-                    {
-                        name: 'Logout',
-                        url: '/logout',
-                        icon: 'icon-logout'
-                    }
-                ]
-
-            }
-
+            //
         }
     }
 </script>
