@@ -54,10 +54,8 @@
                     return;
 
                 window.axios.post('/auth/login', {email: this.email, password: this.password})
-                    .then((response) => {
-
-                        //TODO Check login result
-                        //TODO store to localstorage
+                    .then((resp) => {
+                        this.$store.commit('setUser', resp.data);
 
                         this.$router.push('/dashboard');
                     })
@@ -81,10 +79,8 @@
          */
         mounted() {
 
-            //TODO Handle already logged in
-            // If we are already logged in send to the images page
-//            if (this.loggedin())
-//                this.$router.push('/dashboard');
+            if (this.$store.getters.getToken) //If valid token - redirect
+                this.$router.push('/dashboard');
 
             // Focus on mount
             this.$refs.focusOnMe.focus();

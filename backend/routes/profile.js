@@ -15,7 +15,10 @@ router.get(`${BASE}/:id`, async (ctx) => {
     console.log(`GET ${BASE}/${ctx.params.id}`);
 
     try {
-        const profile = await Profile.find(ctx.params.id);
+        // const profile = await Profile.find(ctx.params.id);
+        const profiles = await Profile.findByUser(ctx.params.id);
+
+        let profile = profiles[0]; //For now we will only allow a single profile per user
 
         ctx.body = {
             profile: profile,

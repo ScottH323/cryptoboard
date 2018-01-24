@@ -27,7 +27,9 @@ router.post(`${BASE}/login`, async (ctx) => {
         };
 
         const token = jwt.sign(payload, process.env.APP_KEY, {expiresIn: '24h'});
-        ctx.body    = {jwt: token, root: 'Auth'};
+        delete user.password;
+
+        ctx.body = {token: token, user: user};
 
     } catch (e) {
         console.log(e);

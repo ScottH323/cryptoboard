@@ -27,7 +27,7 @@ export default new VueRouter({
             component: require('./views/logout.vue')
         },
         {
-            meta: {requiresAuth: false}, //TODO change to true
+            meta: {requiresAuth: true},
             name: 'Dashboard',
             path: '/dashboard',
             component: require('./views/dashboard.vue')

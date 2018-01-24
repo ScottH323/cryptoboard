@@ -5,15 +5,19 @@ if (result.error) {
 }
 
 const Koa        = require('koa');
+const cors       = require('koa-cors');
 const BodyParser = require('koa-bodyparser');
 const jwt        = require('jsonwebtoken');
 const errors     = require('./errors');
 const db         = require('./db');
 
-db.migrate(); //Run through migrations and setup DB
-db.seed();
+//Run through migrations and setup DB
+db.migrate().then(() => {
+    db.seed();
+});
 
 const app = module.exports = new Koa();
+app.use(cors()); //TODO Deprecated - need to look to alternative or self-build
 app.use(BodyParser());
 
 /**
@@ -35,7 +39,7 @@ app.use(async (ctx, next) => {
         ctx.state.user = payload;
 
     } catch (e) {
-        let err = ctx.ParseError(e);
+        let err = errors.ParseError(e);
 
         if (e.message === 'invalid token') //Override
             err = errors.AuthError;
@@ -54,4 +58,5 @@ app.use(require('./routes/currency.js'));
 app.use(require('./routes/profile.js'));
 app.use(require('./routes/user.js'));
 
+console.log(`Listening on port: ${3000}`);
 app.listen(3000);

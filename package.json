@@ -69,6 +69,7 @@
     "jsonwebtoken": "^8.1.1",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
+    "koa-cors": "^0.0.16",
     "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
@@ -79,6 +80,8 @@
     "vue-router": "^2.3.0",
     "vue-sweetalert": "^0.1.17",
     "vue-toasted": "^1.1.12",
-    "vuex": "^2.4.0"
+    "vue-worker": "^1.2.1",
+    "vuex": "^2.4.0",
+    "worker-loader": "^1.1.0"
   }
 }
