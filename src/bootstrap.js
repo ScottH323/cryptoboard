@@ -9,17 +9,13 @@ import Helper from './Helper';
 import store from './XStore';
 import router from './app.router';
 import VueCharts from 'vue-chartjs';
-import Worker from './workers/currency.worker';
 
 window.Vue       = Vue;
 window.VueRouter = VueRouter;
 
 window.axios = axios.create({
-    baseURL: 'http://localhost:3000', //TODO move to env
+    baseURL: 'http://localhost:3000',
     timeout: 1000,
-    headers: {
-        Authorization: `Bearer ${store.getters.getToken}`
-    },
 });
 
 window.EventBus = new window.Vue();
@@ -41,18 +37,25 @@ Vue.use(Toasted, {duration: (2.5 * 1000)});
 
 Vue.use(VueCharts);
 
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        const res = store.getters.checkToken;
+        console.log(`Token Valid: ${res}`);
+
+        if (!res) {
+            console.log('Invalid Token!');
+
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            });
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+});
+
 window.router = router;
-
-const worker = new Worker();
-
-//start worker
-worker.postMessage({start: true});
-
-/**
- * Message will return our crypto array to push over to the store
- * @param event
- */
-worker.onmessage = function (event) {
-    console.log(event);
-    store.commit('updateCurrency', event.data);
-};

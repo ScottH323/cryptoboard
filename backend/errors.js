@@ -20,6 +20,13 @@ module.exports = {
         message: "You are not authorized to access this resource"
     },
 
+    ArgsError: {
+        code: 400,
+        success: false,
+        internal: true,
+        message: "Invalid request"
+    },
+
     SQLError: {
         code: 500,
         success: false,

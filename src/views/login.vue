@@ -56,7 +56,6 @@
                 window.axios.post('/auth/login', {email: this.email, password: this.password})
                     .then((resp) => {
                         this.$store.commit('setUser', resp.data);
-
                         this.$router.push('/dashboard');
                     })
                     .catch((e) => {

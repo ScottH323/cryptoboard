@@ -109,7 +109,6 @@ router.get(`${BASE}/:id/investments`, async (ctx) => {
             }
         }
 
-
     } catch (e) {
         let err    = errors.ParseError(e);
         ctx.status = err.code;
@@ -131,8 +130,45 @@ router.post(`${BASE}/:id/investments`, async (ctx) => {
     try {
         const res = await Profile.invest(ctx.params.id, curId, amnt, price);
 
+        //Return the updated account investments
+        const invest = await Profile.allInvestments(ctx.params.id);
+
         ctx.body = {
-            investment: res
+            profile: {
+                id: ctx.params.id,
+                investments: invest
+            }
+        }
+
+    } catch (e) {
+        let err    = errors.ParseError(e);
+        ctx.status = err.code;
+        ctx.body   = err.message;
+    }
+});
+
+
+/**
+ * Create a new investment
+ */
+router.delete(`${BASE}/:id/investments/:invId`, async (ctx) => {
+    console.log(`DELETE ${BASE}/${ctx.params.id}/investments/${ctx.params.invId}`);
+
+    try {
+        if (!ctx.params.id || !ctx.params.invId)
+            throw errors.ArgsError;
+
+
+        await Profile.uninvest(ctx.params.id, ctx.params.invId);
+
+        //Return the updated account investments
+        const invest = await Profile.allInvestments(ctx.params.id);
+
+        ctx.body = {
+            profile: {
+                id: ctx.params.id,
+                investments: invest
+            }
         }
 
     } catch (e) {

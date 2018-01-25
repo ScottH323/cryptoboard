@@ -1,5 +1,6 @@
-const {Pool} = require('pg');
-const bcrypt = require('bcrypt');
+const {Pool}     = require('pg');
+const bcrypt     = require('bcrypt');
+const CoinMarket = require('../models/coinmarket');
 
 const pool = new Pool({
     user: process.env.PG_USER,
@@ -8,6 +9,19 @@ const pool = new Pool({
     password: process.env.PG_PASSWORD,
     port: parseInt(process.env.PG_PORT),
 });
+
+/**
+ * Imports currencies from coinmarketcap
+ *
+ * @return {Promise.<void>}
+ */
+async function importCurrencies() {
+    const imp = await CoinMarket.retrieve();
+
+    for (let i of imp) {
+        await pool.query(`INSERT INTO currency (symbol,ex_id) VALUES ($1,$2) ON CONFLICT (ex_id) DO NOTHING;`, [i.symbol, i.id])
+    }
+}
 
 /**
  * Seeds the users table
@@ -102,8 +116,8 @@ module.exports = {
         //Creates currency table
         await pool.query(`CREATE TABLE IF NOT EXISTS currency (
         id SERIAL PRIMARY KEY,
-        symbol VARCHAR(4) NOT NULL,
-        ex_id VARCHAR(50) NOT NULL
+        symbol VARCHAR(10) NOT NULL,
+        ex_id VARCHAR(50) NOT NULL UNIQUE
         )`);
 
         //Creates currency_profiles join table with additional buy price
@@ -137,6 +151,11 @@ module.exports = {
         });
 
         await seedJoin().catch(err => {
+            console.error(err.stack)
+        });
+
+        //Import our currencies
+        await importCurrencies().catch(err => {
             console.error(err.stack)
         });
     }

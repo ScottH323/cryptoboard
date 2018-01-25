@@ -1,5 +1,6 @@
-const db     = require('../db');
-const errors = require('../errors');
+const db       = require('../db');
+const errors   = require('../errors');
+const Currency = require('./currency');
 
 /**
  * Profile {
@@ -96,12 +97,15 @@ class Profile {
      * Assign a currency and price to the profile
      *
      * @param id
-     * @param currencyId
+     * @param currencyName
      * @param amount
      * @param buyPrice
      * @return {Promise.<void>}
      */
-    static async invest(id, currencyId, amount, buyPrice) {
+    static async invest(id, currencyName, amount, buyPrice) {
+
+        const currency   = await Currency.findByName(currencyName);
+        const currencyId = currency.id; //Can refactor down but keep for now
 
         const cid = `${id}_${currencyId}_${buyPrice}`; //Use buyprice to ensure we keep separate buy prices
         console.log(`Checking cid: ${cid}`);
@@ -125,6 +129,18 @@ class Profile {
         return rows[0];
     }
 
+    /**
+     * Removes an investment entry for a profile
+     *
+     * @param profileId
+     * @param investmentId
+     * @return {Promise.<void>}
+     */
+    static async uninvest(profileId,investmentId) {
+
+        //Use profile_id to stop cross-profile deletion
+        await db.query("DELETE FROM currency_profiles WHERE id=$1 AND profile_id=$2", [investmentId,profileId])
+    }
 
     /**
      * Gets all investments on the profile and returns them
@@ -133,8 +149,7 @@ class Profile {
      * @return {Promise.<void>}
      */
     static async allInvestments(id) {
-        const {rows} = await db.query(`SELECT currency_id, amount,buy_price, symbol, ex_id  FROM currency_profiles JOIN currency ON currency_profiles.currency_id = currency.id`)
-        console.log(rows);
+        const {rows} = await db.query(`SELECT currency_profiles.id, currency_id, amount,buy_price, symbol, ex_id  FROM currency_profiles JOIN currency ON currency_profiles.currency_id = currency.id`)
 
         return rows;
     }

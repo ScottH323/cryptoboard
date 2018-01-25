@@ -12,7 +12,7 @@ class CoinMarket {
 
         //TODO Handle errors
 
-        return this.parse(res.data)
+        return res.data;
     }
 
     /**
@@ -20,7 +20,9 @@ class CoinMarket {
      * @param apiData
      * @return {{}}
      */
-    static parse(apiData) {
+    static async parse() {
+        const apiData = await this.retrieve();
+
         let table = {};
 
         for (let c of apiData)

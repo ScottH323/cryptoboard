@@ -27,9 +27,10 @@ router.get(`${BASE}`, async (ctx) => {
 });
 
 router.get(`${BASE}/table`, async (ctx) => {
+    console.log(`GET ${BASE}/table`);
 
     try {
-        const cur = await CoinMarket.retrieve();
+        const cur = await CoinMarket.parse();
 
         ctx.body = {
             currency: cur,
