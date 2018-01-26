@@ -20,6 +20,19 @@ class ProfileHistory {
         return rows;
     }
 
+    /**
+     * Add history entry for a profile
+     *
+     * @param profileId
+     * @param investment
+     * @param profit
+     * @param date
+     * @return {Promise.<void>}
+     */
+    static async addHistory(profileId, investment, profit, date) {
+        await db.query("INSERT INTO profile_history (profile_id,total_investment,total_profit,created_at) VALUES($1,$2,$3,$4)", [profileId, investment, profit, date])
+    }
+
 }
 
 module.exports = ProfileHistory;

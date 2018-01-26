@@ -12,6 +12,20 @@ const Currency = require('./currency');
 class Profile {
 
     /**
+     * Returns all profiles
+     *
+     * @return {Promise.<*>}
+     */
+    static async all() {
+        const {rows} = await db.query("SELECT * FROM profiles");
+
+        if (!rows.length)
+            throw errors.ServerError;
+
+        return rows;
+    }
+
+    /**
      * Find by user_id
      *
      * NB: This can return multiple as a user can create multiple profiles
@@ -136,10 +150,10 @@ class Profile {
      * @param investmentId
      * @return {Promise.<void>}
      */
-    static async uninvest(profileId,investmentId) {
+    static async uninvest(profileId, investmentId) {
 
         //Use profile_id to stop cross-profile deletion
-        await db.query("DELETE FROM currency_profiles WHERE id=$1 AND profile_id=$2", [investmentId,profileId])
+        await db.query("DELETE FROM currency_profiles WHERE id=$1 AND profile_id=$2", [investmentId, profileId])
     }
 
     /**
@@ -149,7 +163,7 @@ class Profile {
      * @return {Promise.<void>}
      */
     static async allInvestments(id) {
-        const {rows} = await db.query(`SELECT currency_profiles.id, currency_id, amount,buy_price, symbol, ex_id  FROM currency_profiles JOIN currency ON currency_profiles.currency_id = currency.id`)
+        const {rows} = await db.query(`SELECT currency_profiles.id, currency_id, amount,buy_price, symbol, ex_id  FROM currency_profiles JOIN currency ON currency_profiles.currency_id = currency.id`);
 
         return rows;
     }

@@ -17,7 +17,6 @@ class CoinMarket {
 
     /**
      * Parses the response into a nice table we can reference via id
-     * @param apiData
      * @return {{}}
      */
     static async parse() {

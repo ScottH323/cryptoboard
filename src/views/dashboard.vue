@@ -17,15 +17,19 @@
 
         <hr>
         <div class="row">
-            <div class="col-md-8 col-sm-12">
-                <h3>Investments</h3>
+            <div class="col-sm-12">
+                <h3>Investments
+                    <small>
+                        <b-btn v-b-modal.modal-center class="btn btn-sm btn-primary float-right">New Investment</b-btn>
+                    </small>
+                </h3>
                 <investments></investments>
             </div>
-            <div class="col-md-4 col-sm-12">
-                <h3>New Investment</h3>
-                <create-investment></create-investment>
-            </div>
         </div>
+
+        <b-modal id="modal-center" centered title="New Investment">
+            <create-investment></create-investment>
+        </b-modal>
     </section>
 </template>
 
