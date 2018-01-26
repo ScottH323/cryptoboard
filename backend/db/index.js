@@ -23,6 +23,28 @@ async function importCurrencies() {
     }
 }
 
+async function seedHistory() {
+    console.log("Seeding history");
+
+    const {rows} = await pool.query("SELECT id FROM profile_history");
+
+    if (rows.length) return;
+
+    await pool.query(`INSERT INTO profile_history (profile_id,total_investment,total_profit,created_at) VALUES 
+    (1, 2000, 11000, $1),
+    (1, 2000, 2300, $2),
+    (1, 2000, 1900, $3),
+    (1, 1000, 900, $4),
+    (1, 1000, 1400, $5),
+    (1, 1000, 1200, $6)
+    `, [getDaysAgo(1), getDaysAgo(2), getDaysAgo(3), getDaysAgo(4), getDaysAgo(5), getDaysAgo(6)]);
+}
+
+
+function getDaysAgo(days) {
+    return new Date(new Date().setDate(new Date().getDate() - days));
+}
+
 /**
  * Seeds the users table
  *
@@ -131,6 +153,16 @@ module.exports = {
         )`);
 
 
+        //Creates profile_history table
+        await pool.query(`CREATE TABLE IF NOT EXISTS profile_history (
+        id SERIAL PRIMARY KEY,
+        profile_id INTEGER REFERENCES profiles(id) NOT NULL,
+        total_investment NUMERIC NOT NULL,
+        total_profit NUMERIC NOT NULL,
+        created_at TIMESTAMP
+        )`);
+
+
         //TODO Handle indexes
     },
 
@@ -138,25 +170,24 @@ module.exports = {
      * Handles seeding in initial config
      */
     seed: async () => {
-        await seedUsers().catch(err => {
-            console.error(err.stack)
-        });
 
-        await seedProfiles().catch(err => {
-            console.error(err.stack)
-        });
+        const seedError = (e) => {
+            console.log(e.stack)
+        };
 
-        await seedCurrency().catch(err => {
-            console.error(err.stack)
-        });
+        await seedUsers().catch(seedError);
 
-        await seedJoin().catch(err => {
-            console.error(err.stack)
-        });
+        await seedProfiles().catch(seedError);
+
+        await seedCurrency().catch(seedError);
+
+        await seedJoin().catch(seedError);
+
+
+        await seedHistory().catch(seedError);
 
         //Import our currencies
-        await importCurrencies().catch(err => {
-            console.error(err.stack)
-        });
+        await importCurrencies().catch(seedError);
+
     }
 };

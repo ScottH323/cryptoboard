@@ -6,6 +6,8 @@
 
 <template>
     <section class="dashboard">
+        <h1>Dashboard</h1>
+        <hr>
         <div class="row">
             <div class="col-12">
                 <!-- Graph Here -->
@@ -13,11 +15,14 @@
             </div>
         </div>
 
+        <hr>
         <div class="row">
             <div class="col-md-8 col-sm-12">
+                <h3>Investments</h3>
                 <investments></investments>
             </div>
             <div class="col-md-4 col-sm-12">
+                <h3>New Investment</h3>
                 <create-investment></create-investment>
             </div>
         </div>

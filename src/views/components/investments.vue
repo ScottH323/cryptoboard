@@ -9,47 +9,49 @@
 </style>
 
 <template>
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <th>Symbol</th>
-            <th>Amount</th>
-            <th>Buy Price</th>
-            <th>Current Price</th>
-            <th>Profit</th>
-            <th>Inc.</th>
-            <th>Options</th>
-        </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Amount</th>
+                <th>Buy Price</th>
+                <th>Current Price</th>
+                <th>Profit</th>
+                <th>Inc.</th>
+                <th>Options</th>
+            </tr>
+            </thead>
 
-        <tbody>
-        <tr v-if="renderTable" v-for="i in calcInvestments">
-            <td>{{ i.symbol }}</td>
-            <td>{{ i.amount }}</td>
-            <td>{{ toCur(i.buy_price) }}</td>
-            <td>{{ toCur(i.currentPrice) }}</td>
-            <td>{{ toCur(i.profit) }}</td>
-            <td>{{ i.percent }}%</td>
-            <td>
-                <button class="btn btn-sm btn-danger" v-on:click="deleteInvestment(i.id)">Delete</button>
-            </td>
-        </tr>
+            <tbody>
+            <tr v-if="renderTable" v-for="i in calcInvestments">
+                <td>{{ i.symbol }}</td>
+                <td>{{ i.amount }}</td>
+                <td>{{ toCur(i.buy_price) }}</td>
+                <td>{{ toCur(i.currentPrice) }}</td>
+                <td>{{ toCur(i.profit) }}</td>
+                <td>{{ i.percent }}%</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" v-on:click="deleteInvestment(i.id)">Delete</button>
+                </td>
+            </tr>
 
-        <tr class="total">
-            <td>TOTAL</td>
-            <td></td>
-            <td>{{ toCur(summary.totalSpent) }}</td>
-            <td></td>
-            <td v-bind:class="{ good: (summary.averageIncrease > 0), bad: (summary.averageIncrease <= 0) }">
-                {{ toCur(summary.totalProfit) }}
-            </td>
-            <td v-bind:class="{ good: (summary.averageIncrease > 0), bad: (summary.averageIncrease <= 0) }">
-                {{ summary.averageIncrease }}%
-            </td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
+            <tr class="total">
+                <td>TOTAL</td>
+                <td></td>
+                <td>{{ toCur(summary.totalSpent) }}</td>
+                <td></td>
+                <td v-bind:class="{ good: (summary.averageIncrease > 0), bad: (summary.averageIncrease <= 0) }">
+                    {{ toCur(summary.totalProfit) }}
+                </td>
+                <td v-bind:class="{ good: (summary.averageIncrease > 0), bad: (summary.averageIncrease <= 0) }">
+                    {{ summary.averageIncrease }}%
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -97,7 +99,7 @@
 
                     i.currentPrice    = currency[i.ex_id];
                     i.profit          = currentUnitPrice - unitPrice;
-                    i.percent         = ((currency[i.ex_id] - unitPrice) / unitPrice * 100).toFixed(2);
+                    i.percent         = (((unitPrice - currency[i.ex_id]) / unitPrice) * 100).toFixed(2);
                     i.totalInvestment = this.toCur(unitPrice);
 
                     this.summary.totalSpent += parseInt(unitPrice);

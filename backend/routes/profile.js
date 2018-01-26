@@ -1,7 +1,8 @@
-const router  = require('koa-router')(); // router middleware for koa
-const db      = require('../db');
-const Profile = require('../models/profile');
-const errors  = require('../errors');
+const router         = require('koa-router')(); // router middleware for koa
+const db             = require('../db');
+const Profile        = require('../models/profile');
+const ProfileHistory = require('../models/profileHistory');
+const errors         = require('../errors');
 
 
 const BASE = '/profiles';
@@ -90,6 +91,31 @@ router.delete(`${BASE}/:id`, async (ctx) => {
     } catch (err) {
         ctx.status = err.code;
         ctx.body   = err;
+    }
+});
+
+
+/**
+ * Return the history of the profile
+ */
+router.get(`${BASE}/:id/history`, async (ctx) => {
+    console.log(`GET ${BASE}/${ctx.params.id}/history`);
+
+    try {
+        const profile = await Profile.findByUser(ctx.params.id);
+        const history = await ProfileHistory.all(profile[0].id);
+
+        ctx.body = {
+            profile: {
+                id: ctx.params.id,
+                history: history
+            }
+        }
+
+    } catch (e) {
+        let err    = errors.ParseError(e);
+        ctx.status = err.code;
+        ctx.body   = err.message;
     }
 });
 
