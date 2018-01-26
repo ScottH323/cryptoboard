@@ -1,10 +1,12 @@
 <template>
-    <div class="container">
+    <div>
         <nav-bar></nav-bar>
-        <div class="row flex-xl-nowrap">
-            <main class="col-12" role="main">
-                <router-view></router-view>
-            </main>
+        <div class="container">
+            <div class="row flex-xl-nowrap">
+                <main class="col-12" role="main">
+                    <router-view></router-view>
+                </main>
+            </div>
         </div>
     </div>
 </template>

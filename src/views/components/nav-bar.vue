@@ -1,28 +1,11 @@
-<style>
-    #sideNav {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        float: left;
-        padding-right: 8%;
-        border-right: 1px solid #dddddd;
-        width: 150px;
-        display: none;
-    }
-</style>
-
 <template>
-
-    <section id="sideNav">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <router-link to="/dashboard">Dashboard</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link to="/logout">Logout</router-link>
-            </li>
-        </ul>
-    </section>
+    <div v-if="this.$store.getters.checkToken" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Crypto-Board</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <!--<a class="p-2 text-dark" href="#">History</a>-->
+        </nav>
+        <router-link to="/logout" class="nav-link" href="#">Sign out</router-link>
+    </div>
 </template>
 
 <script>

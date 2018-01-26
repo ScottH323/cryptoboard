@@ -99,8 +99,7 @@
 
                     i.currentPrice    = currency[i.ex_id];
                     i.profit          = currentUnitPrice - unitPrice;
-                    i.percent         = (((unitPrice - currency[i.ex_id]) / unitPrice) * 100).toFixed(2);
-                    i.totalInvestment = this.toCur(unitPrice);
+                    i.percent         = ((i.profit / unitPrice) * 100).toFixed(2);
 
                     this.summary.totalSpent += parseInt(unitPrice);
                     this.summary.totalProfit += i.profit;
@@ -122,7 +121,7 @@
                 const formatter = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
-                    minimumFractionDigits: 2,
+                    minimumFractionDigits: 4,
                 });
 
                 return formatter.format(val)
