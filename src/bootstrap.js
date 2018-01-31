@@ -9,12 +9,14 @@ import Helper from './Helper';
 import store from './XStore';
 import router from './app.router';
 import VueCharts from 'vue-chartjs';
+import config from 'config';
 
 window.Vue       = Vue;
 window.VueRouter = VueRouter;
 
+console.log(`Base Url: ${config.BASE_URL}`);
 window.axios = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: config.BASE_URL,
     timeout: 1000,
 });
 

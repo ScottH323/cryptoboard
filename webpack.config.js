@@ -41,6 +41,7 @@ module.exports = {
     resolve: {
         alias: {
             vue: 'vue/dist/vue',
+            config: path.join(__dirname, (inProduction ? 'prod': 'dev') + '.config.js'),
         },
     },
     entry: {
