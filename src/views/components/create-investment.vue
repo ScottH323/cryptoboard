@@ -1,4 +1,4 @@
-<template>
+<template v-if="ready">
     <form class="form" @submit.prevent="buyCurrency">
         <div class="form-group">
             <label for="currency">Select Coin:</label>
@@ -27,6 +27,7 @@
     export default {
         data() {
             return {
+                isReady: false,
                 selected: 'bitcoin',
                 amount: 0,
                 buyPrice: 0,
@@ -34,10 +35,17 @@
             }
         },
         computed: {
-            //
+            ready() {
+                return this.$store.state.ready
+            }
         },
         methods: {
             setBuy() {
+                if (!this.currency || this.currency === null) {
+                    this.buyPrice = 0;
+                    return;
+                }
+
                 this.buyPrice = this.currency[this.selected];
             },
             getCurrency() {

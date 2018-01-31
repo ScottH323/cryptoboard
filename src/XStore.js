@@ -11,6 +11,7 @@ const store = new Vuex.Store({
         savedData: false,
         currencyTracker: null,
         dashboard: null,
+        ready: false,
     },
     getters: {
         getUser: state => {
@@ -73,7 +74,8 @@ const store = new Vuex.Store({
     mutations: {
         updateCurrency: (state, data) => {
             state.currencyTracker = data;
-            localStorage.setItem("latestCurrency", JSON.stringify(state.currencyTracker))
+            localStorage.setItem("latestCurrency", JSON.stringify(state.currencyTracker));
+            state.ready = true;
         },
 
         updateDashboard: (state, data) => {

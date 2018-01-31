@@ -8,7 +8,7 @@
     }
 </style>
 
-<template>
+<template v-if="ready">
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -60,6 +60,7 @@
     export default {
         data() {
             return {
+                isReady: false,
                 hasInvestments: false,
                 renderTable: false,
                 summary: {
@@ -74,6 +75,10 @@
             }
         },
         computed: {
+
+            ready() {
+                return this.$store.state.ready
+            },
             /**
              * Loops through current investments and calculates profit/loss
              */
@@ -84,7 +89,7 @@
                 this.summary.totalSpent  = 0;
                 this.summary.totalProfit = 0;
 
-                if (!currency)
+                if (!currency || currency === null)
                     return [];
 
                 //Handle some sync issues
@@ -97,9 +102,9 @@
                     let unitPrice        = i.buy_price * i.amount;
                     let currentUnitPrice = currency[i.ex_id] * i.amount;
 
-                    i.currentPrice    = currency[i.ex_id];
-                    i.profit          = currentUnitPrice - unitPrice;
-                    i.percent         = ((i.profit / unitPrice) * 100).toFixed(2);
+                    i.currentPrice = currency[i.ex_id];
+                    i.profit       = currentUnitPrice - unitPrice;
+                    i.percent      = ((i.profit / unitPrice) * 100).toFixed(2);
 
                     this.summary.totalSpent += parseInt(unitPrice);
                     this.summary.totalProfit += i.profit;
@@ -164,6 +169,7 @@
                  * @param event
                  */
                 w1.onmessage = (event) => {
+                    this.isReady     = true;
                     this.renderTable = true;
                     this.$store.commit('updateCurrency', event.data.currency);
                 };
