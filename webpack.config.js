@@ -125,15 +125,6 @@ module.exports = {
         }),
 
         /**
-         * Move project stuff
-         */
-        new CopyWebpackPlugin([
-            {
-                from: __dirname + '/src/assets/img', to: __dirname + '/public/img'
-            }
-        ]),
-
-        /**
          * Extract all of the stylus out into this CSS file
          */
         new ExtractTextPlugin(((inProduction) ? '[name].[chunkhash].css' : '[name].css')),
@@ -168,7 +159,7 @@ if (inProduction) {
 
     // Uglify
     module.exports.plugins.push(
-        new UglifyJSPlugin(),
+        // new UglifyJSPlugin(),
         new OptimizeCssAssetsPlugin()
     );
 
