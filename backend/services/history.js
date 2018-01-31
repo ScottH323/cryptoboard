@@ -7,8 +7,10 @@ class HistoryService {
     /**
      * Start the service
      */
-    static start() {
-        this.addHistoryEntry(); //TEST only
+    start() {
+        this.addHistoryEntry().catch((e) => {
+            console.log(e.trace);
+        }); //TEST only
 
         const pollTime = 1000 * 60 * 60; //1 hour
         this.timeout   = setTimeout(this.addHistoryEntry, pollTime)
@@ -17,7 +19,7 @@ class HistoryService {
     /**
      * Stop the service
      */
-    static stop() {
+    stop() {
         this.timeout = null;
     }
 
@@ -25,7 +27,7 @@ class HistoryService {
      * Loops through the active profiles
      * @return {Promise.<void>}
      */
-    static async addHistoryEntry() {
+    async addHistoryEntry() {
         this.currency = await CoinMarket.parse();
 
         const profiles = await Profile.all();
@@ -42,7 +44,7 @@ class HistoryService {
      * @param profile
      * @return {Promise.<void>}
      */
-    static async calculateProfile(profile) {
+    async calculateProfile(profile) {
         console.log(`Checking Profile ${profile.id}`);
 
         const investments = await Profile.allInvestments(profile.id);

@@ -10,12 +10,14 @@ const BodyParser = require('koa-bodyparser');
 const jwt        = require('jsonwebtoken');
 const errors     = require('./errors');
 const db         = require('./db');
+const HistoryService = require('./services/history');
+
 //Run through migrations and setup DB
 db.migrate().then(() => {
     db.seed();
 
-    const HistoryService = require('./services/history');
-    HistoryService.start();
+    const hs             = new HistoryService;
+    hs.start();
 });
 
 const app = module.exports = new Koa();
