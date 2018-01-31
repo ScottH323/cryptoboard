@@ -8,7 +8,7 @@
     }
 </style>
 
-<template v-if="ready">
+<template>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -60,7 +60,6 @@
     export default {
         data() {
             return {
-                isReady: false,
                 hasInvestments: false,
                 renderTable: false,
                 summary: {
@@ -169,7 +168,6 @@
                  * @param event
                  */
                 w1.onmessage = (event) => {
-                    this.isReady     = true;
                     this.renderTable = true;
                     this.$store.commit('updateCurrency', event.data.currency);
                 };
