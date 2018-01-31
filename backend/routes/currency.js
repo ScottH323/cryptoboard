@@ -3,7 +3,7 @@ const errors     = require("../errors");
 const Currency   = require('../models/currency');
 const CoinMarket = require('../models/coinmarket');
 
-const BASE = '/currency';
+const BASE = '/api/currency';
 
 /**
  * Return all the current currencies we have profiles for

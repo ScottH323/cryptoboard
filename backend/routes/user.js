@@ -3,7 +3,7 @@ const errors = require('../errors');
 const db     = require('../db');
 const User   = require('../models/user');
 
-const BASE = "/users";
+const BASE = "/api/users";
 
 /**
  * Return a list of all users

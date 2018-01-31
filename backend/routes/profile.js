@@ -5,7 +5,7 @@ const ProfileHistory = require('../models/profileHistory');
 const errors         = require('../errors');
 
 
-const BASE = '/profiles';
+const BASE = '/api/profiles';
 
 /**
  * Get the profile

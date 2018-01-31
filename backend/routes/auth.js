@@ -5,7 +5,7 @@ const errors = require('../errors');
 
 const User = require('../models/user');
 
-const BASE = '/auth';
+const BASE = '/api/auth';
 
 /**
  * Login and check credentials then provide JWT
