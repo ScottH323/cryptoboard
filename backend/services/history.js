@@ -12,8 +12,15 @@ class HistoryService {
             console.log(e.trace);
         }); //TEST only
 
-        const pollTime = 1000 * 60 * 60; //1 hour
-        this.timeout   = setTimeout(this.addHistoryEntry, pollTime)
+        const pollTime = 1000 * 60 * 10; //10 minutes
+        this.timeout   = setInterval(() => { //Need to ensure `this` correct
+
+            console.log(`Checking profile history`);
+            this.addHistoryEntry().catch((e) => {
+                console.log(e.trace);
+            });
+
+        }, pollTime)
     }
 
     /**
@@ -33,10 +40,9 @@ class HistoryService {
         const profiles = await Profile.all();
 
         for (let profile of profiles)
-            this.calculateProfile(profile).catch((e) => {
+            await this.calculateProfile(profile).catch((e) => {
                 console.log(e.trace);
             })
-
     }
 
     /**

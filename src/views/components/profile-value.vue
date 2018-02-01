@@ -20,13 +20,15 @@
 
         methods: {
             getChartData() {
+                console.log('Checking for new chart data');
                 window.axios.get(`/profiles/${this.$store.getters.getUser.id}/history`).then((resp) => {
                     this.valHist = [];
                     this.invHist = [];
+                    this.labels  = [];
+
                     for (let h of resp.data.profile.history) {
                         this.valHist.push(h.total_profit);
                         this.invHist.push(h.total_investment);
-
                         this.labels.push(h.created_at)
                     }
 
@@ -50,11 +52,14 @@
                         ]
                     }
                 });
-            }
+            },
         },
 
         beforeMount() {
             this.getChartData();
+            setInterval(() => {
+                this.getChartData();
+            }, 1000 * 60 * 2)
         },
     }
 </script>

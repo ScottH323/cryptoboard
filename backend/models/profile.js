@@ -125,7 +125,6 @@ class Profile {
         console.log(`Checking cid: ${cid}`);
 
         const existing = await db.query("SELECT id,amount from currency_profiles WHERE cid=$1 LIMIT 1", [cid]);
-        console.log(existing.rows[0]);
 
         if (existing.rows.length > 0) {
             const exOld = existing.rows[0];
